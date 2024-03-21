@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/seanceNav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="Seance"
+        android:icon="@drawable/baseline_camera_roll_24"/>
+    <item
+        android:id="@+id/homeNav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="Home"
+        android:icon="@drawable/home_fill0_wght400_grad0_opsz24"/>
+    <item
+        android:id="@+id/profileNav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="Profile"
+        android:icon="@drawable/person_fill0_wght400_grad0_opsz24"/>
+</menu>
