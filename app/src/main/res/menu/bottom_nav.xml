@@ -6,7 +6,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:title="Seance"
-        android:icon="@drawable/baseline_camera_roll_24"/>
+        android:icon="@drawable/outline_camera_roll_24"/>
     <item
         android:id="@+id/homeNav"
         android:layout_width="wrap_content"

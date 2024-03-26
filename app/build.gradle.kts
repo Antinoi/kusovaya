@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
 
+
 }
 val room_version = "2.6.1"
 
@@ -41,9 +42,11 @@ android {
         jvmTarget = "1.8"
     }
 }
+val nav_version = "2.7.7"
+val koin_version = "3.5.3"
 
 dependencies {
-    val nav_version = "2.7.7"
+
 
     implementation("androidx.room:room-runtime:$room_version")
     annotationProcessor("androidx.room:room-compiler:$room_version")
@@ -61,6 +64,25 @@ dependencies {
 
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+
+    //implementation("org.squareup.retrofit2:retrofit:2.9.0")
+    //implementation("org.squareup.retrofit2:converter-gson:2.9.0")
+
+    // https://mvnrepository.com/artifact/com.google.code.gson/gson
+    implementation ("com.google.code.gson:gson:2.10.1")
+
+    // https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-gson
+    implementation("com.squareup.retrofit2:converter-gson:2.10.0")
+
+    implementation ("com.github.bumptech.glide:glide:4.13.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.13.0")
+
+    implementation(platform("io.insert-koin:koin-bom:$koin_version"))
+    implementation("io.insert-koin:koin-core")
+    implementation("io.insert-koin:koin-android:$koin_version")
+
 
 
 }
