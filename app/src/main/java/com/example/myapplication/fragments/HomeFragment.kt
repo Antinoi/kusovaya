@@ -76,11 +76,11 @@ class HomeFragment : Fragment(), PosterAdapter.OnPosterClickListener {
          adapter = PosterAdapter(
              listofposters,
              filmTitles,
-//                     filmYears,
-//                     filmRatings,
-//                     filmLengths,
-//                     filmGenres,
-//                     filmDescriptions,
+                     filmYears,
+                     filmRatings,
+                     filmLengths,
+                     filmGenres,
+                     filmDescriptions,
              viewPager2,
              this@HomeFragment)
 
@@ -162,7 +162,14 @@ class HomeFragment : Fragment(), PosterAdapter.OnPosterClickListener {
                  Log.d("ERROR", "$filmTitles")
 
 
-                 adapter.updateData(listofposters, filmTitles)
+                 adapter.updateData(
+                     listofposters,
+                     filmTitles,
+                     filmYears,
+                     filmRatings,
+                     filmLengths,
+                     filmGenres,
+                     filmDescriptions )
 
              }
 
@@ -205,19 +212,19 @@ class HomeFragment : Fragment(), PosterAdapter.OnPosterClickListener {
 
     //when you choose poster
     override fun onPosterClick(
-        filmTitle: String
-//        filmYear: String,
-//        filmRating: String,
-//        filmLength: String,
-//        filmGenre: String,
-//        filmDescription: String,
+        filmTitle: String,
+        filmYear: String,
+        filmRating: String,
+        filmLength: String,
+        filmGenre: String,
+        filmDescription: String,
         ) {
         binding.filmNametextView.text = filmTitle
-//        binding.yearTextView.text = filmYear
-//        binding.reitTextView.text = "$filmRating+"
-//        binding.longTextView.text = "$filmLength м"
-//        binding.genretextView.text = filmGenre
-//        binding.descriptionTextView.text = filmDescription
+        binding.yearTextView.text = filmYear
+        binding.reitTextView.text = "$filmRating+"
+        binding.longTextView.text = "$filmLength м"
+        binding.genretextView.text = filmGenre
+        binding.descriptionTextView.text = filmDescription
     }
 
     companion object {

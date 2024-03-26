@@ -13,11 +13,11 @@ class PosterAdapter(
     private val posterList: MutableList<String>,
 
     private val filmTitles: MutableList<String>,
-//    private val filmYears: MutableList<String>,
-//    private val filmRatings : MutableList<String>,
-//    private val filmLengths: MutableList<String>,
-//    private val filmGenres: MutableList<String>,
-//    private var filmDescriptions: MutableList<String>,
+    private val filmYears: MutableList<String>,
+    private val filmRatings : MutableList<String>,
+    private val filmLengths: MutableList<String>,
+    private val filmGenres: MutableList<String>,
+    private var filmDescriptions: MutableList<String>,
 
     private val viewPager2: ViewPager2,
     private val listener: OnPosterClickListener):
@@ -27,12 +27,12 @@ class PosterAdapter(
 
     interface OnPosterClickListener {
         fun onPosterClick(
-            filmTitle: String
-//            filmYear: String,
-//            filmRating: String,
-//            filmLength: String,
-//            filmGenre: String,
-//            filmDescription: String
+            filmTitle: String,
+            filmYear: String,
+            filmRating: String,
+            filmLength: String,
+            filmGenre: String,
+            filmDescription: String
         )
 
         
@@ -84,12 +84,12 @@ class PosterAdapter(
             holder.itemView.setOnClickListener {
 
                 listener.onPosterClick(
-                    filmTitles[realPosition]
-//                filmYears[realPosition],
-//                filmRatings[realPosition],
-//                filmLengths[realPosition],
-//                filmGenres[realPosition],
-//                filmDescriptions[realPosition]
+                    filmTitles[realPosition],
+                filmYears[realPosition],
+                filmRatings[realPosition],
+                filmLengths[realPosition],
+                filmGenres[realPosition],
+                filmDescriptions[realPosition]
                 )
 
             }
@@ -102,7 +102,12 @@ class PosterAdapter(
 
     suspend fun updateData(
         listofposters: MutableList<String>,
-        newFilmTitles: MutableList<String>
+        newFilmTitles: MutableList<String>,
+        newfilmYears: MutableList<String>,
+        newfilmRatings: MutableList<String>,
+        newfilmLengths: MutableList<String>,
+        newfilmGenres: MutableList<String>,
+        newfilmDescriptions: MutableList<String>,
     ) {
 
 //        Log.d("ERROR", "В ОБНОВЛЕНИИ!!!!")
@@ -114,6 +119,11 @@ class PosterAdapter(
 
         posterList.addAll(listofposters)
         filmTitles.addAll(newFilmTitles)
+        filmYears.addAll(newfilmYears)
+        filmRatings.addAll(newfilmRatings)
+        filmLengths.addAll(newfilmLengths)
+        filmGenres.addAll(newfilmGenres)
+        filmDescriptions.addAll(newfilmDescriptions)
 
 
 
