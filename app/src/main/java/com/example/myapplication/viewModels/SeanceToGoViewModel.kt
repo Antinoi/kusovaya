@@ -38,7 +38,7 @@ class SeanceToGoViewModel : ViewModel() {
         executorService.execute {
             goes.postValue(
                 CinemaDB.getInstance(context)
-                    .seanceToGoDao().select().toMutableList()
+                    .seanceToGoDao().select()?.toMutableList()
             )
         }
     }

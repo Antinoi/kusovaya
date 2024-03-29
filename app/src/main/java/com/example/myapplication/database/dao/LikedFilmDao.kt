@@ -18,6 +18,6 @@ interface LikedFilmDao {
     fun getByUser(id: Long): List<LikedFilm>?
 
     @Query("SELECT * FROM likedFilms")
-    fun select():List<LikedFilm>
+    fun select():List<LikedFilm>?
 
 }

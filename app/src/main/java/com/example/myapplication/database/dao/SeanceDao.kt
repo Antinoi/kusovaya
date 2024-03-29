@@ -12,9 +12,14 @@ interface SeanceDao {
     fun add(seance: Seance): Long
     @Query("DELETE FROM seances WHERE seanceId = :id")
     fun delete(id: Long)
+    @Query("DELETE FROM seances")
+    fun deleteAll()
     @Query("SELECT * FROM seances")
     fun select():List<Seance>
     @Query("SELECT * FROM seances WHERE idFilm = :idFilm AND data = :data AND time = :time AND idZal = :idZal")
     fun getByAttr(idFilm: Long, data: String, time: String, idZal: Long):Seance?
+
+    @Query("SELECT * FROM seances WHERE idFilm = :idFilm")
+    fun getByFilm(idFilm: Long):List<Seance>?
 
 }

@@ -37,7 +37,7 @@ class FilmSavedViewModel : ViewModel() {
         executorService.execute {
             films.postValue(
                 CinemaDB.getInstance(context)
-                    .filmDao().select().toMutableList()
+                    .filmDao().select()?.toMutableList()
             )
         }
     }

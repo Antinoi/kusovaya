@@ -3,7 +3,6 @@ package com.example.myapplication.fragments
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -120,7 +119,7 @@ class HomeFragment : Fragment(), PosterAdapter.OnPosterClickListener {
 
 
 
-         Log.d("ERROR", "ОНО дебил")
+         //Log.d("ERROR", "ОНО дебил")
 
 
          viewLifecycleOwner.lifecycleScope.launchWhenResumed {
@@ -129,29 +128,29 @@ class HomeFragment : Fragment(), PosterAdapter.OnPosterClickListener {
                  // Так как collect выполняется в Main потоке, мы можем обновлять UI напрямую
 
 
-                 Log.d("ERROR", "ОНО ЗАШЛО В КОЛЛЕКТ")
+                 //Log.d("ERROR", "ОНО ЗАШЛО В КОЛЛЕКТ")
 
 
 
-                 for (i in 0 until min(films.docs.size, 10)){
+                 for (i in 0 until min(films.size, 10)){
                      try {
                          // Ваш код
 
-                         listofposters.add(films.docs[i].poster.url)
-                         filmTitles.add(films.docs[i].name)
-                         filmYears.add(films.docs[i].year.toString())
-                         filmRatings.add(films.docs[i].ageRating.toString())
-                         filmLengths.add(films.docs[i].movieLength.toString())
-                         filmGenres.add(films.docs[i].genres[0].name)
-                         filmDescriptions.add(films.docs[i].description)
+                         listofposters.add(films[i].poster)
+                         filmTitles.add(films[i].title)
+                         filmYears.add(films[i].year.toString())
+                         filmRatings.add(films[i].ageRating.toString())
+                         filmLengths.add(films[i].movieLength.toString())
+                         filmGenres.add(films[i].genre)
+                         filmDescriptions.add(films[i].description)
 
 
 
 
-                         Log.d("ERROR", "$i")
+//                         Log.d("ERROR", "$i")
                      } catch (e: Exception) {
-                         Log.e("ERROR", "Exception on iteration $i: ${e.message}")
-                         Log.d("ERROR", "${films.docs}")
+//                         Log.e("ERROR", "Exception on iteration $i: ${e.message}")
+//                         Log.d("ERROR", "${films}")
                          break // Остановите цикл после возникновения исключения, если это уместно
                      }
 
@@ -160,9 +159,9 @@ class HomeFragment : Fragment(), PosterAdapter.OnPosterClickListener {
                  }
 
 
-                 Log.d("ERROR", "Вошёл в обновление")
-                 Log.d("ERROR", "$listofposters")
-                 Log.d("ERROR", "$filmTitles")
+//                 Log.d("ERROR", "Вошёл в обновление")
+//                 Log.d("ERROR", "$listofposters")
+//                 Log.d("ERROR", "$filmTitles")
 
 
                  adapter.updateData(
@@ -176,13 +175,7 @@ class HomeFragment : Fragment(), PosterAdapter.OnPosterClickListener {
 
              }
 
-             //changing the view of pager
-             viewPager2.offscreenPageLimit = 3
-             viewPager2.clipToPadding = false
-             viewPager2.clipChildren = false
-             viewPager2.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-             (viewPager2.parent as ViewGroup).clipToPadding = false
-             (viewPager2.parent as ViewGroup).clipChildren = false
+
 
 
 
@@ -190,6 +183,14 @@ class HomeFragment : Fragment(), PosterAdapter.OnPosterClickListener {
          }
 
 
+
+         //changing the view of pager
+         viewPager2.offscreenPageLimit = 3
+         viewPager2.clipToPadding = false
+         viewPager2.clipChildren = false
+         viewPager2.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+         (viewPager2.parent as ViewGroup).clipToPadding = false
+         (viewPager2.parent as ViewGroup).clipChildren = false
 
 
         //что-то с аргументами

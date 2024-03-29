@@ -26,6 +26,10 @@ data class Seance(
     @ColumnInfo("data") val data: String,
     @ColumnInfo("time") val time: String,
 
-    @ColumnInfo("idZal") val idZal: Long = 0,
-    @ColumnInfo("idFilm") val idFilm: Long = 0
+
+    @ColumnInfo("idZal") val idZal: Long,
+    @ColumnInfo("idFilm") val idFilm: Long,
+    @ColumnInfo("zal") val zal: String,
+    @ColumnInfo("film") val film: String,
+    @ColumnInfo("poster") val poster: String,
 )

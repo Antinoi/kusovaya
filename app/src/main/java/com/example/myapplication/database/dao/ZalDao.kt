@@ -20,6 +20,6 @@ interface ZalDao {
     @Query("SELECT * FROM zals WHERE zalId = :id")
     fun getById(id: Long): Zal?
     @Query("SELECT * FROM zals")
-    fun select():List<Zal>
+    fun select():List<Zal>?
 
 }

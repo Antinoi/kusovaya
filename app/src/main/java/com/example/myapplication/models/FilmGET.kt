@@ -1,5 +1,6 @@
 package com.example.myapplication.models
 
+import com.example.myapplication.database.tables.Film
 import kotlinx.serialization.Serializable
 
 
@@ -91,3 +92,20 @@ data class Backdrop(
 data class Logo(
     val url: String?
 )
+
+
+fun FilmResponse.toFilms(): List<Film> {
+    return this.docs.map { filmGET ->
+        val genres = if (filmGET.genres.isNotEmpty()) filmGET.genres[0].name else ""
+        val countries = if (filmGET.countries.isNotEmpty()) filmGET.countries[0].name else ""
+        Film(
+            title = filmGET.name,
+            year = filmGET.year.toLong(),
+            ageRating = filmGET.ageRating,
+            movieLength = filmGET.movieLength,
+            description = filmGET.description,
+            genre = genres,
+            poster = filmGET.poster.url // Предполагаем, что URL постера хранится в объекте Poster
+        )
+    }
+}

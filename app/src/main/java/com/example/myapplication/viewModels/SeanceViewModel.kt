@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import com.example.myapplication.database.CinemaDB
 
 import com.example.myapplication.database.tables.Seance
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.util.concurrent.Executors
 
 class SeanceViewModel : ViewModel() {
@@ -27,7 +29,7 @@ class SeanceViewModel : ViewModel() {
             val id = CinemaDB.getInstance(context)
                 .seanceDao().add(seance)
             seances.postValue(seances.value.apply {
-                this?.add(Seance(id, seance.data, seance.time, seance.idZal, seance.idFilm))
+                this?.add(Seance(id, seance.data, seance.time, seance.idZal, seance.idFilm, seance.zal, seance.film,seance.poster))
             })
             //неэффективно
             // getAll(context)
@@ -42,6 +44,21 @@ class SeanceViewModel : ViewModel() {
             )
         }
     }
+
+    suspend fun getAllSUS(context: Context): MutableList<Seance> {
+        executorService.execute {
+            seances.postValue(
+                CinemaDB.getInstance(context)
+                    .seanceDao().select().toMutableList()
+            )
+        }
+        return withContext(Dispatchers.IO) {
+            CinemaDB.getInstance(context).seanceDao().select().toMutableList()// Пример вызова метода getAll() вашей DAO
+        }
+
+
+    }
+
 
     fun delete(context: Context, id: Long) {
         executorService.execute {

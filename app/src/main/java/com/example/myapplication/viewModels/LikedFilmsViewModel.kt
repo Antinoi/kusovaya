@@ -38,7 +38,7 @@ class LikedFilmsViewModel : ViewModel() {
         executorService.execute {
             likes.postValue(
                 CinemaDB.getInstance(context)
-                    .likedFilmDao().select().toMutableList()
+                    .likedFilmDao().select()?.toMutableList()
             )
         }
     }

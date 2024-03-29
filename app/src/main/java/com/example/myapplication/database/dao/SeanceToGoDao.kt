@@ -18,6 +18,6 @@ interface SeanceToGoDao {
     fun getByUser(id: Long): List<SeanceToGo>?
 
     @Query("SELECT * FROM seancesToGo")
-    fun select():List<SeanceToGo>
+    fun select():List<SeanceToGo>?
 
 }

@@ -9,8 +9,8 @@ import org.koin.dsl.module
 
 val filmModule = module {
     single<FilmRepository> {
-        FilmRepositoryImpl(Retrofit.retrofit)
+        FilmRepositoryImpl(Retrofit.retrofit, get(), get())
     }
     viewModel { FilmViewModel(get()) }
-
 }
+

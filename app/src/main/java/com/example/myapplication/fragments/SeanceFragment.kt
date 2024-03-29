@@ -5,56 +5,67 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.myapplication.R
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapplication.adapters.SeancesAdapter
+import com.example.myapplication.database.CinemaDatabase
+import com.example.myapplication.database.tables.Seance
+import com.example.myapplication.databinding.FragmentSeanceBinding
+import com.example.myapplication.utils.SeancesDiffUtil
+import com.example.myapplication.viewModels.SeanceViewModel
 
 
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class SeanceFragment : Fragment(), SeancesAdapter.OnSeanceListener {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [SeanceFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class SeanceFragment : Fragment() {
+    private lateinit var binding: FragmentSeanceBinding
+    private lateinit var database: CinemaDatabase
+    private lateinit var adapter: SeancesAdapter
+    private val itemModel: SeanceViewModel by viewModels()
 
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        adapter = SeancesAdapter()
+        adapter.setSeanceListener(this)
+
+        binding.seanceRecycleView.layoutManager = LinearLayoutManager(requireContext())
+        binding.seanceRecycleView.adapter = adapter
+        binding.seanceRecycleView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
+
+
+
+
+        itemModel.seances.observe(viewLifecycleOwner){
+            val productDiffUtilCallback =
+                SeancesDiffUtil(adapter.getSeances(), it)
+            val productDiffResult =
+                DiffUtil.calculateDiff(productDiffUtilCallback)
+            adapter.setSeances(it)
+            productDiffResult.dispatchUpdatesTo(adapter)
         }
+        itemModel.getAll(requireContext())
+
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_seance, container, false)
+    ): View {
+        binding = FragmentSeanceBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SeanceFragment.
-         */
 
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SeanceFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+
+
+    }
+
+    override fun onGoSeance(seance: Seance) {
+        TODO("Not yet implemented")
     }
 }

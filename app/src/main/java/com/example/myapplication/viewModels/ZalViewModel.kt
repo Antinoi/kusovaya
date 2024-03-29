@@ -38,12 +38,12 @@ class ZalViewModel : ViewModel() {
         executorService.execute {
             zals.postValue(
                 CinemaDB.getInstance(context)
-                    .zalDao().select().toMutableList()
+                    .zalDao().select()?.toMutableList()
             )
         }
     }
 
-    fun delete(context: Context, id: Long) {
+     fun delete(context: Context, id: Long) {
         executorService.execute {
 
             CinemaDB.getInstance(context)
