@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="20dp" /> <!-- Здесь вы можете установить радиус скругления -->
+    <solid android:color="@android:color/transparent" /> <!-- Цвет фона, в данном случае прозрачный -->
+    <stroke android:width="2dp" android:color="@android:color/transparent" /> <!-- Цвет границы, в данном случае черный -->
+</shape>

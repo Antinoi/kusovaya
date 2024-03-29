@@ -145,6 +145,9 @@ class HomeFragment : Fragment(), PosterAdapter.OnPosterClickListener {
                          filmGenres.add(films.docs[i].genres[0].name)
                          filmDescriptions.add(films.docs[i].description)
 
+
+
+
                          Log.d("ERROR", "$i")
                      } catch (e: Exception) {
                          Log.e("ERROR", "Exception on iteration $i: ${e.message}")
@@ -180,6 +183,8 @@ class HomeFragment : Fragment(), PosterAdapter.OnPosterClickListener {
              viewPager2.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
              (viewPager2.parent as ViewGroup).clipToPadding = false
              (viewPager2.parent as ViewGroup).clipChildren = false
+
+
 
 
          }

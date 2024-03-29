@@ -5,11 +5,119 @@
     android:layout_height="match_parent"
     tools:context=".fragments.UserFragment">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="user"
-        android:layout_gravity="center" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="15dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:text="Информация об аккаунте:" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="20dp">
+
+                <LinearLayout
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Логин:" />
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginTop="30dp"
+                        android:text="E-mail:" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="50dp">
+
+                    <TextView
+                        android:id="@+id/userNameTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Tonechka" />
+
+                    <TextView
+                        android:id="@+id/emailTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginTop="30dp"
+                        android:text="goskovantonina@mail.ru" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginBottom="15dp">
+
+            <Button
+                android:id="@+id/showGoingButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Запись" />
+
+            <Button
+                android:id="@+id/showLikedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Понравившиеся" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="50dp"/>
+
+    </LinearLayout>
 
 </FrameLayout>

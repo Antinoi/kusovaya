@@ -6,14 +6,25 @@
     app:cardCornerRadius="10dp"
     >
 
-    <ImageView
-        android:id="@+id/posterView"
-        android:layout_width= "match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:scaleType="fitXY"
-       >
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    </ImageView>
+        <ImageView
+            android:id="@+id/posterView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:scaleType="fitXY">
+
+        </ImageView>
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="В избранном"
+            />
+    </FrameLayout>
 
 </androidx.cardview.widget.CardView>
