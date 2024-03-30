@@ -4,10 +4,8 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.myapplication.database.CinemaDB
-
 import com.example.myapplication.database.tables.Seance
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.example.myapplication.database.views.SeanceCard
 import java.util.concurrent.Executors
 
 class SeanceViewModel : ViewModel() {
@@ -16,7 +14,7 @@ class SeanceViewModel : ViewModel() {
     val search: MutableList<Seance> = mutableListOf()
 
 
-    var seances = MutableLiveData<MutableList<Seance>>()
+    var seances = MutableLiveData<MutableList<SeanceCard>>()
     init {
         seances.postValue(mutableListOf())
     }
@@ -24,40 +22,29 @@ class SeanceViewModel : ViewModel() {
 
 
 
-    fun addData(context: Context, seance: Seance) {
-        executorService.execute {
-            val id = CinemaDB.getInstance(context)
-                .seanceDao().add(seance)
-            seances.postValue(seances.value.apply {
-                this?.add(Seance(id, seance.data, seance.time, seance.idZal, seance.idFilm, seance.zal, seance.film,seance.poster))
-            })
-            //неэффективно
-            // getAll(context)
-        }
-    }
+
 
     fun getAll(context: Context) {
         executorService.execute {
             seances.postValue(
-                CinemaDB.getInstance(context)
-                    .seanceDao().select().toMutableList()
+                CinemaDB.getInstance(context).SeanceCardDao().select().toMutableList()
             )
         }
     }
 
-    suspend fun getAllSUS(context: Context): MutableList<Seance> {
-        executorService.execute {
-            seances.postValue(
-                CinemaDB.getInstance(context)
-                    .seanceDao().select().toMutableList()
-            )
-        }
-        return withContext(Dispatchers.IO) {
-            CinemaDB.getInstance(context).seanceDao().select().toMutableList()// Пример вызова метода getAll() вашей DAO
-        }
-
-
-    }
+//    suspend fun getAllSUS(context: Context): MutableList<Seance> {
+//        executorService.execute {
+//            seances.postValue(
+//                CinemaDB.getInstance(context)
+//                    .seanceDao().select().toMutableList()
+//            )
+//        }
+//        return withContext(Dispatchers.IO) {
+//            CinemaDB.getInstance(context).seanceDao().select().toMutableList()// Пример вызова метода getAll() вашей DAO
+//        }
+//
+//
+//    }
 
 
     fun delete(context: Context, id: Long) {
@@ -73,22 +60,22 @@ class SeanceViewModel : ViewModel() {
     }
 
 
-    fun searchByAttr(context: Context, idFilm: Long, data: String, time: String, idZal: Long){
-        executorService.execute {
-
-
-            val element = CinemaDB.getInstance(context)
-                .seanceDao().getByAttr(idFilm, data, time, idZal)
-
-            if(element != null){
-                search.add(element)
-                seances.postValue(search)
-            }
-
-
-
-        }
-    }
+//    fun searchByAttr(context: Context, idFilm: Long, data: String, time: String, idZal: Long){
+//        executorService.execute {
+//
+//
+//            val element = CinemaDB.getInstance(context)
+//                .seanceDao().getByAttr(idFilm, data, time, idZal)
+//
+//            if(element != null){
+//                search.add(element)
+//                seances.postValue(search)
+//            }
+//
+//
+//
+//        }
+//    }
 
     companion object {
         private lateinit var seanceViewModel: SeanceViewModel

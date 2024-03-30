@@ -4,8 +4,9 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-
+import androidx.room.Transaction
 import com.example.myapplication.database.tables.Zal
+import com.example.myapplication.database.tables.ZalWithSeances
 
 @Dao
 interface ZalDao {
@@ -21,5 +22,16 @@ interface ZalDao {
     fun getById(id: Long): Zal?
     @Query("SELECT * FROM zals")
     fun select():List<Zal>?
+
+
+
+
+    @Transaction
+    @Query("SELECT * FROM zals")
+    fun getAllZalsWithSeances(): List<ZalWithSeances>
+
+    @Transaction
+    @Query("SELECT * FROM zals WHERE zalId =:id ")
+    fun getZalByIdWithSeances(id: Long): ZalWithSeances?
 
 }

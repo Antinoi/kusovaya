@@ -31,6 +31,8 @@ class FilmRepositoryImpl(
                 // Если есть интернет, загружаем данные с сервера
                 if (isConnected) {
 
+                    Log.d("ERROR", "считает, что есть подключение")
+
                     val filmResponse = retrofit.create(FilmAPI::class.java).getAllFilms()
                     val films: List<Film> = filmResponse.toFilms()
 
@@ -56,8 +58,12 @@ class FilmRepositoryImpl(
 
 
 
+//                        withContext(Dispatchers.IO){
+//                            cinemaDatabase.seanceDao().deleteAll()
+//                        }
 
-                        for (i in 0 until min(films.size, 11)) {
+
+                        for (i in 0 until min(films.size, 5)) {
                             val existingFilm = withContext(Dispatchers.IO) {
                                 cinemaDatabase.filmDao().getByAttr(films[i].title, films[i].poster)
                             }
@@ -97,10 +103,10 @@ class FilmRepositoryImpl(
 
                                 if(currentFilm != null){
                                     withContext(Dispatchers.IO) {
-                                        cinemaDatabase.seanceDao().add(Seance(0,"31.02", "10:00",1, currentFilm.id,"Большой зал", currentFilm.title,currentFilm.poster))
+                                        cinemaDatabase.seanceDao().add(Seance(0,"31.02", "10:00",1, currentFilm.id))
 
-                                        cinemaDatabase.seanceDao().add(Seance(0, "30.02", "10:00",2, currentFilm.id, "Малый зал", currentFilm.title,currentFilm.poster))
-                                        //cinemaDatabase.seanceDao().delete(currentFilm.id)
+                                        cinemaDatabase.seanceDao().add(Seance(0, "30.02", "10:00",2,  currentFilm.id))
+
                                     }
                                 }
 

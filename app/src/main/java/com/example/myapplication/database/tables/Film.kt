@@ -1,7 +1,9 @@
 package com.example.myapplication.database.tables
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.Relation
 
 @Entity("films")
 data class Film(
@@ -15,4 +17,13 @@ data class Film(
     @ColumnInfo("genre") val genre: String,
     @ColumnInfo("poster") val poster: String
 
+)
+
+data class FilmWithSeances(
+    @Embedded val film: Film,
+    @Relation(
+        parentColumn = "filmId",
+        entityColumn = "idFilm"
+    )
+    val seances: List<Seance>
 )

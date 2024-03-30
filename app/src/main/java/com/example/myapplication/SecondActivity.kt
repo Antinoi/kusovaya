@@ -1,12 +1,15 @@
 package com.example.myapplication
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.myapplication.database.CinemaDB
 import com.example.myapplication.databinding.ActivitySecondBinding
 import com.example.myapplication.fragments.HomeFragment
 import com.example.myapplication.fragments.SeanceFragment
 import com.example.myapplication.fragments.UserFragment
+import java.util.concurrent.Executors
 
 
 class SecondActivity : AppCompatActivity() {
@@ -22,6 +25,12 @@ class SecondActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         replaceFragment(HomeFragment())
+
+        val executorService = Executors.newSingleThreadExecutor()
+
+        executorService.execute{
+            Log.d("DATABASE", "onCreate: ${CinemaDB.getInstance(this).SeanceCardDao().select()}")
+        }
 
         binding.bottomNavigationView.setOnItemSelectedListener {
 

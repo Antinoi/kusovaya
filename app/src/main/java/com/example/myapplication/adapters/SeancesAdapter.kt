@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myapplication.database.tables.Seance
+import com.example.myapplication.database.views.SeanceCard
 import com.example.myapplication.databinding.SeanceItemBinding
 import com.example.myapplication.viewModels.SeanceViewModel
 
@@ -38,9 +39,9 @@ class SeancesAdapter():
      * данные
      * */
 
-    private var seances: MutableList<Seance> = mutableListOf()
+    private var seances: MutableList<SeanceCard> = mutableListOf()
     fun getSeances() = seances
-    fun setSeances(value: List<Seance>){
+    fun setSeances(value: List<SeanceCard>){
         seances = value.toMutableList()
     }
 
@@ -74,8 +75,8 @@ class SeancesAdapter():
 //        val zal = CinemaDB.getInstance(context).zalDao().getById(seances[position].idZal)
 
 
-            holder.itemBinding.filmTitleSTextView.text = seances[position].film
-            holder.itemBinding.zalSeanceTextView2.text = seances[position].zal
+            holder.itemBinding.filmTitleSTextView.text = seances[position].title
+            holder.itemBinding.zalSeanceTextView2.text = seances[position].zalName
             holder.itemBinding.dataSeanceTextView.text = seances[position].data
             holder.itemBinding.timeSeanceTextView4.text = seances[position].time
 
@@ -102,14 +103,12 @@ class SeancesAdapter():
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     seanceListener.onGoSeance(
-                        Seance(seances[position].id,
+                        Seance(seances[position].seanceId,
                         seances[position].data,
                         seances[position].time,
-                        seances[position].idFilm,
-                        seances[position].idZal,
-                            seances[position].zal,
-                            seances[position].film,
-                            seances[position].poster,)
+                        seances[position].zalId,
+                        seances[position].filmId,
+                           )
                     )
                 }
 

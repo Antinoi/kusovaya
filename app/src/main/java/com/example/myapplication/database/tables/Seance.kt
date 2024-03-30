@@ -20,6 +20,8 @@ import androidx.room.PrimaryKey
 
     )
 )
+
+
 data class Seance(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "seanceId") val id: Long = 0,
@@ -29,7 +31,8 @@ data class Seance(
 
     @ColumnInfo("idZal") val idZal: Long,
     @ColumnInfo("idFilm") val idFilm: Long,
-    @ColumnInfo("zal") val zal: String,
-    @ColumnInfo("film") val film: String,
-    @ColumnInfo("poster") val poster: String,
+
 )
+
+
+
