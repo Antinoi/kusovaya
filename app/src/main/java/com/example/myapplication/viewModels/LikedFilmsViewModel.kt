@@ -2,9 +2,11 @@ package com.example.myapplication.viewModels
 
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.myapplication.database.CinemaDB
+import com.example.myapplication.database.tables.Film
 import com.example.myapplication.database.tables.LikedFilm
 import com.example.myapplication.database.views.UsersLikedFilms
 import java.util.concurrent.Executors
@@ -12,7 +14,7 @@ import java.util.concurrent.Executors
 class LikedFilmsViewModel : ViewModel() {
     private val executorService = Executors.newSingleThreadExecutor()
 
-    val search: MutableList<UsersLikedFilms> = mutableListOf()
+    val searchData = MutableLiveData<Film?>()
 
     val addElement: LikedFilm = LikedFilm(0, 0, 0)
 
@@ -22,14 +24,12 @@ class LikedFilmsViewModel : ViewModel() {
 
     var likes = MutableLiveData<MutableList<UsersLikedFilms>>()
 
-    var liked: UsersLikedFilms = UsersLikedFilms(0, 0,0,"", "", "","", "")
+
     init {
         likes.postValue(mutableListOf())
         state.postValue(false)
 
     }
-
-
 
     fun add(context: Context, idFilm: Long, idUser: Long){
 
@@ -57,11 +57,6 @@ class LikedFilmsViewModel : ViewModel() {
 
     }
 
-
-
-
-
-
     fun getAll(context: Context) {
         executorService.execute {
             likes.postValue(
@@ -74,19 +69,20 @@ class LikedFilmsViewModel : ViewModel() {
     }
 
 
-    fun getByAttr(context: Context, userId: Long, poster: String, title: String): UsersLikedFilms {
+    fun searchByAttr(context: Context, title: String, poster: String): LiveData<Film?> {
 
         executorService.execute {
+            val filmFound = CinemaDB.getInstance(context)
+                .filmDao().getByAttr(title, poster)
 
-            val likedFound = CinemaDB.getInstance(context).UsersLikedFilmsDao().getByAttr(userId, poster, title)
-            if(likedFound != null){
-                liked = likedFound
-            } else{
-                liked = UsersLikedFilms(0, 0,0,"", "", "","", "")
-            }
+            Log.d(TAG, "найденный фильм при попытке лайка: $filmFound")
+            searchData.postValue(filmFound)
         }
-        return liked
+
+        return searchData
     }
+
+
 
     fun delete(context: Context, idUser: Long, idFilm: Long) {
         executorService.execute {

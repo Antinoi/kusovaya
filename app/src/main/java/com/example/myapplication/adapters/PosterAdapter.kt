@@ -11,6 +11,8 @@ import com.bumptech.glide.Glide
 import com.example.myapplication.R
 
 class PosterAdapter(
+
+    private var filmids : MutableList<Long>,
     private val posterList: MutableList<String>,
 
     private val filmTitles: MutableList<String>,
@@ -24,23 +26,15 @@ class PosterAdapter(
 
     private val viewPager2: ViewPager2,
     private val listener: OnPosterClickListener,
-    private val likeListener: OnCheckClickListener):
+
+    private val onLikeChanged: (idFilm: Long, like:Boolean)->Unit):
     RecyclerView.Adapter<PosterAdapter.PosterViewHolder>()
 
 {
 
 
-    interface OnCheckClickListener {
-        fun like(
-            isChecked: Boolean,
-            isCheckedBD:Boolean,
-            poster: String,
-            title: String
-
-        )
 
 
-    }
 
     interface OnPosterClickListener {
         fun onPosterClick(
@@ -110,7 +104,7 @@ class PosterAdapter(
 
 
             holder.checkbox.setOnClickListener {
-                likeListener.like(holder.checkbox.isChecked, isCheckedList[realPosition], posterList[realPosition], filmTitles[realPosition] )
+                onLikeChanged(filmids[realPosition], holder.checkbox.isChecked)
             }
 
             holder.itemView.setOnClickListener {
@@ -137,6 +131,7 @@ class PosterAdapter(
 
 
     suspend fun updateData(
+        newfilmids: MutableList<Long>,
         listofposters: MutableList<String>,
         newFilmTitles: MutableList<String>,
         newfilmYears: MutableList<String>,
@@ -153,7 +148,7 @@ class PosterAdapter(
 //        Log.d("ERROR", "До очистки: listofposters=${listofposters.size},$listofposters , newFilmTitles=${newFilmTitles.size}, $newFilmTitles")
 
 
-
+            filmids.addAll(newfilmids)
             posterList.addAll(listofposters)
             filmTitles.addAll(newFilmTitles)
             filmYears.addAll(newfilmYears)

@@ -29,7 +29,7 @@ class FilmRepositoryImpl(
                 // Проверяем наличие интернет-соединения
 
                 val neededFilms = mutableListOf<filmsForApp>()
-                var fimalFilms: List<filmsForApp> = listOf()
+                var fimalFilms: List<filmsForApp>
 
                 // Если есть интернет, загружаем данные с сервера
 

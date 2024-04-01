@@ -36,7 +36,7 @@ import kotlin.math.min
  * Use the [HomeFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class HomeFragment : Fragment(), PosterAdapter.OnPosterClickListener, PosterAdapter.OnCheckClickListener{
+class HomeFragment : Fragment(), PosterAdapter.OnPosterClickListener{
 
 
     private lateinit var binding: FragmentHomeBinding
@@ -48,7 +48,7 @@ class HomeFragment : Fragment(), PosterAdapter.OnPosterClickListener, PosterAdap
     lateinit var handler: Handler
     lateinit var adapter: PosterAdapter
 
-
+    lateinit var filmids : MutableList<Long>
     lateinit var listofposters : MutableList<String>
     lateinit var filmTitles: MutableList<String>
     lateinit var filmYears: MutableList<String>
@@ -74,7 +74,7 @@ class HomeFragment : Fragment(), PosterAdapter.OnPosterClickListener, PosterAdap
 
      override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-         var wasHandled = false
+         filmids = mutableListOf()
          filmTitles = mutableListOf()
          listofposters = mutableListOf()
          filmYears = mutableListOf()
@@ -92,7 +92,7 @@ class HomeFragment : Fragment(), PosterAdapter.OnPosterClickListener, PosterAdap
          //создание карусели с наполнением
          viewPager2 = binding.viewPager2
 
-         adapter = PosterAdapter(
+         adapter = PosterAdapter(filmids,
              listofposters,
              filmTitles,
                      filmYears,
@@ -103,7 +103,16 @@ class HomeFragment : Fragment(), PosterAdapter.OnPosterClickListener, PosterAdap
              isCheckedList,
              viewPager2,
              this@HomeFragment,
-             this@HomeFragment)
+             ){
+                 idFilm,checked ->
+
+             if(checked){
+                 likedFilmViewModel.add(requireContext(), idFilm, userId!!)
+             }else{
+                 likedFilmViewModel.delete(requireContext(), userId!!, idFilm)
+             }
+
+         }
 
          with(viewPager2) {
              // Задаём отступы, чтобы по бокам были видны части соседних карточек
@@ -181,7 +190,7 @@ class HomeFragment : Fragment(), PosterAdapter.OnPosterClickListener, PosterAdap
 
 
 
-             adapter.updateData(
+             adapter.updateData(filmids,
                  listofposters,
                  filmTitles,
                  filmYears,
@@ -206,7 +215,7 @@ class HomeFragment : Fragment(), PosterAdapter.OnPosterClickListener, PosterAdap
                  for (i in 0 until min(films.size, 5)){
                      try {
                          // Ваш код
-
+                         filmids.add((films[i].id))
                          listofposters.add(films[i].poster)
                          filmTitles.add(films[i].title)
                          filmYears.add(films[i].year.toString())
@@ -241,6 +250,7 @@ class HomeFragment : Fragment(), PosterAdapter.OnPosterClickListener, PosterAdap
 
                  Log.d("ПОСТЕРЫ", "Обновление данных адаптера")
                  adapter.updateData(
+                     filmids,
                      listofposters,
                      filmTitles,
                      filmYears,
@@ -251,17 +261,6 @@ class HomeFragment : Fragment(), PosterAdapter.OnPosterClickListener, PosterAdap
                      isCheckedList)
 
              }
-
-
-
-
-
-
-
-
-
-
-
          }
 
 
@@ -312,62 +311,62 @@ class HomeFragment : Fragment(), PosterAdapter.OnPosterClickListener, PosterAdap
         binding.descriptionTextView.text = filmDescription
     }
 
-    override fun like(isChecked: Boolean, isCheckedBD: Boolean, poster: String, title: String) {
-        val userId = arguments?.getLong("userId")
-        if(userId != null) {
-
-            Log.d("LIKE SCLIKED", "like FILMID: $title ")
-
-            var wasHandled = false
-
-            filmSavedViewModel.searchByAttr(requireContext(), title, poster).observe(viewLifecycleOwner) { film ->
-                film?.let {
-
-                    if (!wasHandled) {
-                        Log.d("LIKE SCLIKED", "like FILMID: $film ")
-
-                        wasHandled = true
-
-                        if(isChecked && !isCheckedBD){
-
-                            val idFilm = film.id
-
-                            Log.d("LIKE SCLIKED", "like FILMID: $idFilm ")
-
-                            likedFilmViewModel.add(requireContext(), idFilm, userId)
-                            wasHandled = false
-
-
-
-                        }else if(!isChecked && isCheckedBD){
-                            val idFilm = film.id
-                            Log.d("LIKE SCLIKED", "like FILMID: $idFilm ")
-
-                            likedFilmViewModel.delete(requireContext(),userId, idFilm)
-
-                            Log.d("LIKE SCLIKED", "like all: ${likedFilmViewModel.getAll(requireContext())} ")
-                            wasHandled = false
-
-                        }else{
-                            Log.d("LIKE ERROR", "состояние лайка фильма не изменилось")
-                        }
-
-                    }
-
-
-
-
-                } ?: run {
-                    Log.d("LIKE ERROR", "лайк не прошёл, в списке нет такого фильма")
-                    wasHandled = false
-
-                }
-            }
-
-
-        }
-
-    }
+//    override fun like(isChecked: Boolean, isCheckedBD: Boolean, poster: String, title: String) {
+//        val userId = arguments?.getLong("userId")
+//        if(userId != null) {
+//
+//            Log.d("LIKE SCLIKED", "like FILMID: $title ")
+//
+//
+//
+//            likedFilmViewModel.searchByAttr(requireContext(), title, poster).observe(viewLifecycleOwner) { film ->
+//                film?.let {
+//
+//
+//                        Log.d("LIKE SCLIKED", "like FILMID: $film ")
+//
+//
+//
+//                        if(isChecked && !isCheckedBD){
+//
+//                            val idFilm = film.id
+//
+//                            Log.d("LIKE SCLIKED", "like FILMID: $idFilm ")
+//
+//                            likedFilmViewModel.add(requireContext(), idFilm, userId)
+//
+//
+//
+//
+//                        }else if(!isChecked && isCheckedBD){
+//                            val idFilm = film.id
+//                            Log.d("LIKE SCLIKED", "like FILMID: $idFilm ")
+//
+//                            likedFilmViewModel.delete(requireContext(),userId, idFilm)
+//
+//                            Log.d("LIKE SCLIKED", "like all: ${likedFilmViewModel.getAll(requireContext())} ")
+//
+//
+//                        }else{
+//                            Log.d("LIKE ERROR", "состояние лайка фильма не изменилось")
+//                        }
+//
+//
+//
+//
+//
+//
+//                } ?: run {
+//                    Log.d("LIKE ERROR", "лайк не прошёл, в списке нет такого фильма")
+//
+//
+//                }
+//            }
+//
+//
+//        }
+//
+//    }
 
 
 
