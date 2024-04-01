@@ -5,15 +5,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.myapplication.database.tables.LikedFilm
-
 import com.example.myapplication.database.views.UsersLikedFilms
 import com.example.myapplication.databinding.LikedfilmItemBinding
 
 
 
-class LikedFilmsAdapter:
-    RecyclerView.Adapter<LikedFilmsAdapter.ViewHolder>() {
+class LikedFilmsAdapter (private val onLikeChanged: (idFilm: Long)->Unit):
+RecyclerView.Adapter<LikedFilmsAdapter.ViewHolder>() {
 
 
     private lateinit var likedFilmsAdapter: LikedFilmsAdapter
@@ -23,7 +21,7 @@ class LikedFilmsAdapter:
 
     interface OnLikedFilmsListener {
 
-        fun onGoLikedFilms(likedFilm: LikedFilm)
+
     }
 
 
@@ -92,14 +90,8 @@ class LikedFilmsAdapter:
             itemBinding.unlikeFilmButton.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    filmListener.onGoLikedFilms(
-                        LikedFilm(userLikedFilms[position].likedFilmId,
-                            userLikedFilms[position].userId,
-                            userLikedFilms[position].filmId
+                    onLikeChanged(userLikedFilms[position].filmId)
 
-
-                        )
-                    )
                 }
 
             }

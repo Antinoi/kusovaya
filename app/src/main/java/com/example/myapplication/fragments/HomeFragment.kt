@@ -19,7 +19,6 @@ import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myapplication.adapters.PosterAdapter
 import com.example.myapplication.databinding.FragmentHomeBinding
-import com.example.myapplication.viewModels.FilmSavedViewModel
 import com.example.myapplication.viewModels.FilmViewModel
 import com.example.myapplication.viewModels.LikedFilmsViewModel
 import kotlinx.coroutines.launch
@@ -63,7 +62,7 @@ class HomeFragment : Fragment(), PosterAdapter.OnPosterClickListener{
 
 
     private val likedFilmViewModel: LikedFilmsViewModel by viewModels()
-    private val filmSavedViewModel: FilmSavedViewModel by viewModels()
+
 
 
 

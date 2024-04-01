@@ -75,9 +75,9 @@ class UserViewModel: ViewModel() {
     }
 
     companion object {
-        private lateinit var zalViewModel: ZalViewModel
+        private lateinit var userViewModel: UserViewModel
 
-        private val TAG = ZalViewModel::class.java.simpleName
+        private val TAG = UserViewModel::class.java.simpleName
     }
 
 }

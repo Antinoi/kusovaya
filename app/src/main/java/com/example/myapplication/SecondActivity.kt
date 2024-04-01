@@ -28,6 +28,7 @@ class SecondActivity : AppCompatActivity() {
 
         val bundle = Bundle().apply {
             putLong("userId", userId!!)
+            putString("login", login!!)
 
         }
 

@@ -48,7 +48,7 @@ class LikedFilmsViewModel : ViewModel() {
             Log.d(TAG, "Все лайкнутые фильмы: ${CinemaDB.getInstance(context).likedFilmDao().select().toMutableList()}")
             state.postValue(true)
 
-            getAll(context)
+            getAll(context, idUser)
 
         }
 
@@ -57,12 +57,14 @@ class LikedFilmsViewModel : ViewModel() {
 
     }
 
-    fun getAll(context: Context) {
+    fun getAll(context: Context, idUser: Long) {
         executorService.execute {
             likes.postValue(
                 CinemaDB.getInstance(context)
-                    .UsersLikedFilmsDao().select().toMutableList()
+                    .UsersLikedFilmsDao().getByUserId(idUser).toMutableList()
             )
+
+            Log.d(TAG, "getAll: ${likes.value}")
 
 
         }
@@ -101,7 +103,7 @@ class LikedFilmsViewModel : ViewModel() {
 
             state.postValue(false)
 
-            getAll(context)
+            getAll(context, idUser)
 
 
         }

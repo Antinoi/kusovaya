@@ -13,15 +13,23 @@ class SeanceViewModel : ViewModel() {
 
     val search: MutableList<Seance> = mutableListOf()
 
+    var email = MutableLiveData<String>()
+
 
     var seances = MutableLiveData<MutableList<SeanceCard>>()
     init {
         seances.postValue(mutableListOf())
+        email.postValue("")
     }
 
 
 
+    fun getEmail(context: Context, userId: Long){
+        executorService.execute{
+            email.postValue(CinemaDB.getInstance(context).userDao().getById(userId)!!.email)
+        }
 
+    }
 
 
     fun getAll(context: Context) {
