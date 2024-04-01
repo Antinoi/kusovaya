@@ -21,50 +21,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <SearchView
-                android:id="@+id/searchSeanceView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                >
-
-            </SearchView>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="15dp"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/todayButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="7dp"
-                    android:layout_weight="1"
-                    android:text="сегодня" />
-
-                <Button
-                    android:id="@+id/tomorrowButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="7dp"
-                    android:layout_weight="1"
-                    android:text="Завтра" />
-
-                <Button
-                    android:id="@+id/aftertomButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-
-                    android:text="послезавтра" />
-            </LinearLayout>
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/seanceRecycleView"
                 android:layout_width="match_parent"
-                android:layout_height="555dp">
+                android:layout_height="match_parent">
 
             </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>

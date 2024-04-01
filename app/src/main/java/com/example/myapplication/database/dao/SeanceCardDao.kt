@@ -15,5 +15,9 @@ interface SeanceCardDao {
     @Query("SELECT * FROM seancecard")
     fun select():List<SeanceCard>
 
+    @Transaction
+    @Query("SELECT * FROM seancecard WHERE seanceId = :seanceId")
+    fun getBySeance(seanceId: Long):SeanceCard
+
 
 }

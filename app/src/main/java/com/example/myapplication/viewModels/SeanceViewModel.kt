@@ -4,25 +4,41 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.myapplication.database.CinemaDB
-import com.example.myapplication.database.tables.Seance
+import com.example.myapplication.database.tables.SeanceToGo
 import com.example.myapplication.database.views.SeanceCard
 import java.util.concurrent.Executors
 
 class SeanceViewModel : ViewModel() {
     private val executorService = Executors.newSingleThreadExecutor()
 
-    val search: MutableList<Seance> = mutableListOf()
+    var search: MutableList<SeanceCard> = mutableListOf()
 
     var email = MutableLiveData<String>()
 
+    var seanceToGo = MutableLiveData<SeanceToGo>()
+
+
+
+    val foundLikedSeances = MutableLiveData<MutableList<SeanceCard>>()
 
     var seances = MutableLiveData<MutableList<SeanceCard>>()
     init {
         seances.postValue(mutableListOf())
         email.postValue("")
+        foundLikedSeances.postValue(mutableListOf())
+        seanceToGo.postValue(SeanceToGo(0, 0, 0))
+
     }
 
 
+
+    fun go (context: Context, userId: Long, seanceId: Long){
+        executorService.execute{
+            CinemaDB.getInstance(context).seanceToGoDao().add(SeanceToGo(0, seanceId, userId))
+
+            getAllSeancesToGo(context, userId)
+        }
+    }
 
     fun getEmail(context: Context, userId: Long){
         executorService.execute{
@@ -55,14 +71,37 @@ class SeanceViewModel : ViewModel() {
 //    }
 
 
-    fun delete(context: Context, id: Long) {
+    fun getAllSeancesToGo(context: Context, idUser: Long) {
+        executorService.execute {
+            search = mutableListOf()
+
+            val goes = CinemaDB.getInstance(context).seanceToGoDao().getByUser(idUser)
+
+            for (i in 0 until goes.size) {
+                search.add(
+                    CinemaDB.getInstance(context).SeanceCardDao().getBySeance(goes[i].idSeance)
+                )
+            }
+
+            foundLikedSeances.postValue(search)
+        }
+    }
+
+    fun findSeanceToGo(context: Context, idUser: Long, idSeance: Long){
+        executorService.execute{
+            seanceToGo.postValue(CinemaDB.getInstance(context).seanceToGoDao().getByAttr(idUser, idSeance))
+        }
+    }
+
+
+    fun delete(context: Context, idUser: Long, isSeance: Long) {
         executorService.execute {
 
             CinemaDB.getInstance(context)
-                .seanceDao().delete(id)
+                .seanceToGoDao().delete(idUser, isSeance)
 
 
-            getAll(context)
+            getAllSeancesToGo(context, idUser)
 
         }
     }

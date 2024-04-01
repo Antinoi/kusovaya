@@ -16,19 +16,10 @@ RecyclerView.Adapter<LikedFilmsAdapter.ViewHolder>() {
 
     private lateinit var likedFilmsAdapter: LikedFilmsAdapter
 
-   private lateinit var likedFilmListener: OnLikedFilmsListener
 
 
-    interface OnLikedFilmsListener {
 
 
-    }
-
-
-    private lateinit var filmListener: OnLikedFilmsListener
-    fun setLikedFilmsListener(listener: OnLikedFilmsListener) {
-        this.filmListener = listener
-    }
 
 
     /**

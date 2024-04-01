@@ -10,10 +10,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.adapters.LikedFilmsAdapter
-import com.example.myapplication.adapters.SeancesAdapter
+import com.example.myapplication.adapters.SeanceToGoAdapter
 import com.example.myapplication.database.CinemaDatabase
 import com.example.myapplication.databinding.FragmentUserBinding
 import com.example.myapplication.utils.FilmsDiffUtil
+import com.example.myapplication.utils.SeancesDiffUtil
 import com.example.myapplication.viewModels.LikedFilmsViewModel
 import com.example.myapplication.viewModels.SeanceViewModel
 
@@ -23,12 +24,14 @@ import com.example.myapplication.viewModels.SeanceViewModel
  * Use the [UserFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class UserFragment : Fragment(), LikedFilmsAdapter.OnLikedFilmsListener {
+class UserFragment : Fragment() {
     private lateinit var binding: FragmentUserBinding
     private lateinit var database: CinemaDatabase
     private lateinit var filmadapter: LikedFilmsAdapter
 
-    private lateinit var seanceadapter: SeancesAdapter
+    private lateinit var seanceadapter: SeanceToGoAdapter
+
+
     private val filmModel: LikedFilmsViewModel by viewModels()
 
     private val seanceModel: SeanceViewModel by viewModels()
@@ -48,8 +51,13 @@ class UserFragment : Fragment(), LikedFilmsAdapter.OnLikedFilmsListener {
 
         }
 
+        seanceadapter = SeanceToGoAdapter(){
+            idSeans ->
+            seanceModel.delete(requireContext(), userId!!, idSeans)
+        }
 
-        filmadapter.setLikedFilmsListener(this)
+
+
 
         binding.likeAndGoRecycleView.layoutManager = LinearLayoutManager(requireContext())
         binding.likeAndGoRecycleView.adapter = filmadapter
@@ -71,8 +79,24 @@ class UserFragment : Fragment(), LikedFilmsAdapter.OnLikedFilmsListener {
 
         filmModel.getAll(requireContext(), userId)
 
+
+        seanceModel.foundLikedSeances.observe(viewLifecycleOwner){
+            val productDiffUtilCallback =
+                SeancesDiffUtil(seanceadapter.getSeances(), it)
+            val productDiffResult =
+                DiffUtil.calculateDiff(productDiffUtilCallback)
+            seanceadapter.setSeances(it)
+            productDiffResult.dispatchUpdatesTo(seanceadapter)
+        }
+
+        seanceModel.getAllSeancesToGo(requireContext(), userId)
+
         binding.showLikedButton.setOnClickListener {
             binding.likeAndGoRecycleView.adapter = filmadapter
+        }
+
+        binding.showGoingButton.setOnClickListener {
+            binding.likeAndGoRecycleView.adapter = seanceadapter
         }
 
 

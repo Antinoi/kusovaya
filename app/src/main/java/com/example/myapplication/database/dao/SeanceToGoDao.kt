@@ -15,9 +15,12 @@ interface SeanceToGoDao {
     fun delete(idUser: Long, idSeance: Long)
 
     @Query("SELECT * FROM seancesToGo WHERE idUser = :id")
-    fun getByUser(id: Long): List<SeanceToGo>?
+    fun getByUser(id: Long): List<SeanceToGo>
+
+    @Query("SELECT * FROM seancesToGo WHERE idUser = :idUser AND idSeance = :idSeance")
+    fun getByAttr(idUser: Long, idSeance: Long): SeanceToGo?
 
     @Query("SELECT * FROM seancesToGo")
-    fun select():List<SeanceToGo>?
+    fun select():List<SeanceToGo>
 
 }

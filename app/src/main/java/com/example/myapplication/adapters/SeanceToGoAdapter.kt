@@ -9,12 +9,8 @@ import com.example.myapplication.database.views.SeanceCard
 import com.example.myapplication.databinding.SeanceItemBinding
 import com.example.myapplication.viewModels.SeanceViewModel
 
-/**
- * Адаптер для RecyclerView.
- * Связывает данные (массив) и UI (ячейки списка)
- * */
-class SeancesAdapter():
-    RecyclerView.Adapter<SeancesAdapter.ViewHolder>() {
+class SeanceToGoAdapter(private val onNotGoClicked: (idSeans: Long)->Unit):
+    RecyclerView.Adapter<SeanceToGoAdapter.ViewHolder>() {
 
 
     private lateinit var seanceViewModel: SeanceViewModel
@@ -22,16 +18,9 @@ class SeancesAdapter():
 
 
 
-    interface OnSeanceListener {
 
-        fun onGoSeance(seansId: Long)
-    }
 
-    private lateinit var seanceListener: OnSeanceListener
 
-    fun setSeanceListener(listener: OnSeanceListener) {
-        this.seanceListener = listener
-    }
 
 
     /**
@@ -48,10 +37,11 @@ class SeancesAdapter():
      * что делать при создании "обслуживателя" ячейки
      * */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(SeanceItemBinding
+        return ViewHolder(
+            SeanceItemBinding
             .inflate(
                 LayoutInflater
-                .from(parent.context)))
+                    .from(parent.context)))
     }
     /**
      * количество данных
@@ -65,24 +55,17 @@ class SeancesAdapter():
 
 
 
-//        val context = holder.itemBinding.posterSeanceImageView2.context
 
 
+        holder.itemBinding.filmTitleSTextView.text = seances[position].title
+        holder.itemBinding.zalSeanceTextView2.text = seances[position].zalName
+        holder.itemBinding.dataSeanceTextView.text = seances[position].data
+        holder.itemBinding.timeSeanceTextView4.text = seances[position].time
 
-//        val film = CinemaDB.getInstance(context)
-//            .filmDao().getById(seances[position].idFilm)
-//        val zal = CinemaDB.getInstance(context).zalDao().getById(seances[position].idZal)
-
-
-            holder.itemBinding.filmTitleSTextView.text = seances[position].title
-            holder.itemBinding.zalSeanceTextView2.text = seances[position].zalName
-            holder.itemBinding.dataSeanceTextView.text = seances[position].data
-            holder.itemBinding.timeSeanceTextView4.text = seances[position].time
-
-            val imagecontext = holder.itemBinding.posterSeanceImageView2.context
-            Glide.with(imagecontext)
-                .load(seances[position].poster)
-                .into(holder.itemBinding.posterSeanceImageView2)
+        val imagecontext = holder.itemBinding.posterSeanceImageView2.context
+        Glide.with(imagecontext)
+            .load(seances[position].poster)
+            .into(holder.itemBinding.posterSeanceImageView2)
 
 
 
@@ -98,13 +81,13 @@ class SeancesAdapter():
         RecyclerView.ViewHolder(itemBinding.root){
 
         init{
+            itemBinding.wantToGoButton.text = "не иду"
+
             itemBinding.wantToGoButton.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    seanceListener.onGoSeance(
-                       seances[position].seanceId
+                    onNotGoClicked(seances[position].seanceId)
 
-                    )
                 }
 
             }
