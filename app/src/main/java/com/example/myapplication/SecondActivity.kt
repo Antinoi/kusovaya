@@ -1,15 +1,12 @@
 package com.example.myapplication
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.myapplication.database.CinemaDB
 import com.example.myapplication.databinding.ActivitySecondBinding
 import com.example.myapplication.fragments.HomeFragment
 import com.example.myapplication.fragments.SeanceFragment
 import com.example.myapplication.fragments.UserFragment
-import java.util.concurrent.Executors
 
 
 class SecondActivity : AppCompatActivity() {
@@ -24,20 +21,39 @@ class SecondActivity : AppCompatActivity() {
         binding = ActivitySecondBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        replaceFragment(HomeFragment())
+        val login = this.intent.extras?.getString("login")
+        val password = this.intent.extras?.getString("password")
+        val userId = this.intent.extras?.getLong("id")
 
-        val executorService = Executors.newSingleThreadExecutor()
 
-        executorService.execute{
-            Log.d("DATABASE", "onCreate: ${CinemaDB.getInstance(this).SeanceCardDao().select()}")
+        val bundle = Bundle().apply {
+            putLong("userId", userId!!)
+
         }
+
+        val homeFragment = HomeFragment().apply {
+            arguments = bundle
+        }
+        val seanceFragment = SeanceFragment().apply {
+            arguments = bundle
+        }
+        val userFragment = UserFragment().apply {
+            arguments = bundle
+        }
+
+
+        replaceFragment(homeFragment)
+
+
+
+
 
         binding.bottomNavigationView.setOnItemSelectedListener {
 
             when(it.itemId){
-                R.id.homeNav -> replaceFragment(HomeFragment())
-                R.id.seanceNav -> replaceFragment(SeanceFragment())
-                R.id.profileNav -> replaceFragment(UserFragment())
+                R.id.homeNav -> replaceFragment(homeFragment)
+                R.id.seanceNav -> replaceFragment(seanceFragment)
+                R.id.profileNav -> replaceFragment(userFragment)
             }
 
             true

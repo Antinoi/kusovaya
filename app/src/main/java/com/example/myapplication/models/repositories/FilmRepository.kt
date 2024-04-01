@@ -1,8 +1,8 @@
 package com.example.myapplication.models.repositories
 
-import com.example.myapplication.database.tables.Film
+import com.example.myapplication.models.filmsForApp
 import kotlinx.coroutines.flow.Flow
 
 interface FilmRepository {
-    fun getAllFilms(): Flow<List<Film>>
+    fun getAllFilms(userId: Long): Flow<List<filmsForApp>>
 }

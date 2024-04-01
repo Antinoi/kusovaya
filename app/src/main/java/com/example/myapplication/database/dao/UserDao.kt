@@ -19,6 +19,6 @@ interface UserDao {
     @Query("UPDATE users SET name = :name, password = :password, email = :email WHERE userId = :id")
     fun update(name: String, password: String, email: String, id: Long)
     @Query("SELECT * FROM users")
-    fun select():List<User>?
+    fun select():List<User>
 
 }

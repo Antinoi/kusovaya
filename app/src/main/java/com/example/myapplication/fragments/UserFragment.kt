@@ -5,56 +5,77 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.myapplication.R
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapplication.adapters.LikedFilmsAdapter
+import com.example.myapplication.database.CinemaDatabase
+import com.example.myapplication.database.tables.LikedFilm
+import com.example.myapplication.databinding.FragmentUserBinding
+import com.example.myapplication.utils.FilmsDiffUtil
+import com.example.myapplication.viewModels.LikedFilmsViewModel
 
 
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+
 
 /**
  * A simple [Fragment] subclass.
  * Use the [UserFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class UserFragment : Fragment() {
+class UserFragment : Fragment(), LikedFilmsAdapter.OnLikedFilmsListener {
+    private lateinit var binding: FragmentUserBinding
+    private lateinit var database: CinemaDatabase
+    private lateinit var adapter: LikedFilmsAdapter
+    private val itemModel: LikedFilmsViewModel by viewModels()
 
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val userId = arguments?.getLong("userId")
+        val login = arguments?.getString("login")
+        val password = arguments?.getString("password")
+
+
+        adapter = LikedFilmsAdapter()
+        adapter.setLikedFilmsListener(this)
+
+        binding.likeAndGoRecycleView.layoutManager = LinearLayoutManager(requireContext())
+        binding.likeAndGoRecycleView.adapter = adapter
+        binding.likeAndGoRecycleView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
+
+        binding.userNameTextView.text = login
+
+
+        itemModel.likes.observe(viewLifecycleOwner){
+            val productDiffUtilCallback =
+                FilmsDiffUtil(adapter.getUsersLikedFilms(), it)
+            val productDiffResult =
+                DiffUtil.calculateDiff(productDiffUtilCallback)
+            adapter.setUsersLikedFilms(it)
+            productDiffResult.dispatchUpdatesTo(adapter)
         }
+        itemModel.getAll(requireContext())
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user, container, false)
+    ): View {
+        binding = FragmentUserBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onGoLikedFilms(likedFilm: LikedFilm) {
+        TODO("Not yet implemented")
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment UserFragment.
-         */
 
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            UserFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+
+
     }
 }

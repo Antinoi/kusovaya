@@ -20,7 +20,7 @@ class SeancesAdapter():
 
     private lateinit var seanceViewModel: SeanceViewModel
 
-    private lateinit var courseListener: OnSeanceListener
+    private lateinit var onSeanceListener: OnSeanceListener
 
 
     interface OnSeanceListener {
@@ -66,7 +66,7 @@ class SeancesAdapter():
 
 
 
-        val context = holder.itemBinding.posterSeanceImageView2.context
+//        val context = holder.itemBinding.posterSeanceImageView2.context
 
 
 

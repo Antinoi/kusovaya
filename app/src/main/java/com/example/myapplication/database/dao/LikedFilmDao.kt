@@ -14,10 +14,16 @@ interface LikedFilmDao {
     @Query("DELETE FROM likedFilms WHERE idUser = :idUser AND idFilm = :idFilm")
     fun delete(idUser: Long, idFilm: Long)
 
+    @Query("DELETE FROM likedFilms")
+    fun deleteAll()
+
     @Query("SELECT * FROM likedFilms WHERE idUser = :id")
-    fun getByUser(id: Long): List<LikedFilm>?
+    fun getByUser(id: Long): List<LikedFilm>
+
+    @Query("SELECT * FROM likedFilms WHERE idUser = :idUser AND idFilm = :idFilm")
+    fun getByAttr(idUser: Long, idFilm: Long): LikedFilm?
 
     @Query("SELECT * FROM likedFilms")
-    fun select():List<LikedFilm>?
+    fun select():List<LikedFilm>
 
 }

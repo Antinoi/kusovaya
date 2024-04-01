@@ -22,7 +22,7 @@ interface FilmDao {
     @Query("SELECT * FROM films WHERE filmId = :id ")
     fun getById(id: Long):Film?
     @Query("SELECT * FROM films")
-    fun select():List<Film>?
+    fun select():List<Film>
 
 
 

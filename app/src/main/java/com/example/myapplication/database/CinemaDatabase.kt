@@ -12,6 +12,7 @@ import com.example.myapplication.database.dao.SeanceCardDao
 import com.example.myapplication.database.dao.SeanceDao
 import com.example.myapplication.database.dao.SeanceToGoDao
 import com.example.myapplication.database.dao.UserDao
+import com.example.myapplication.database.dao.UsersLikedFilmsDao
 import com.example.myapplication.database.dao.ZalDao
 import com.example.myapplication.database.tables.Film
 import com.example.myapplication.database.tables.LikedFilm
@@ -20,6 +21,7 @@ import com.example.myapplication.database.tables.SeanceToGo
 import com.example.myapplication.database.tables.User
 import com.example.myapplication.database.tables.Zal
 import com.example.myapplication.database.views.SeanceCard
+import com.example.myapplication.database.views.UsersLikedFilms
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -29,7 +31,7 @@ import org.koin.dsl.module
     Film::class,
     Zal::class,
     SeanceToGo::class,
-    LikedFilm::class ], views = [SeanceCard::class], version = 1)
+    LikedFilm::class ], views = [SeanceCard::class, UsersLikedFilms::class], version = 1)
 
 abstract class CinemaDatabase: RoomDatabase() {
     abstract fun userDao(): UserDao
@@ -40,6 +42,8 @@ abstract class CinemaDatabase: RoomDatabase() {
     abstract fun likedFilmDao(): LikedFilmDao
 
     abstract fun SeanceCardDao(): SeanceCardDao
+
+    abstract fun UsersLikedFilmsDao(): UsersLikedFilmsDao
 
 
 }

@@ -27,3 +27,15 @@ data class FilmWithSeances(
     )
     val seances: List<Seance>
 )
+
+
+data class FilmWithLikedFilms(
+    @Embedded val film: Film,
+    @Relation(
+        parentColumn = "filmId",
+        entityColumn = "idFilm"
+    )
+    val likedFilms: List<LikedFilm>
+)
+
+

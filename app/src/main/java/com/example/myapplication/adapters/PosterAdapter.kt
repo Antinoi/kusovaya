@@ -3,6 +3,7 @@ package com.example.myapplication.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -18,12 +19,28 @@ class PosterAdapter(
     private val filmLengths: MutableList<String>,
     private val filmGenres: MutableList<String>,
     private var filmDescriptions: MutableList<String>,
+    private var isCheckedList: MutableList<Boolean>,
+
 
     private val viewPager2: ViewPager2,
-    private val listener: OnPosterClickListener):
+    private val listener: OnPosterClickListener,
+    private val likeListener: OnCheckClickListener):
     RecyclerView.Adapter<PosterAdapter.PosterViewHolder>()
 
 {
+
+
+    interface OnCheckClickListener {
+        fun like(
+            isChecked: Boolean,
+            isCheckedBD:Boolean,
+            poster: String,
+            title: String
+
+        )
+
+
+    }
 
     interface OnPosterClickListener {
         fun onPosterClick(
@@ -34,6 +51,8 @@ class PosterAdapter(
             filmGenre: String,
             filmDescription: String
         )
+
+
 
         
 
@@ -54,6 +73,7 @@ class PosterAdapter(
 
     class PosterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val posterImageView: ImageView = itemView.findViewById(R.id.posterView)
+        val checkbox: CheckBox = itemView.findViewById((R.id.checkBox))
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PosterViewHolder {
@@ -74,12 +94,24 @@ class PosterAdapter(
             val realPosition = position % posterList.size
             //private val posterList: MutableList<Int> в параметры класса
             //holder.posterImageView.setImageResource(posterList[realPosition])
+
+
             val context = holder.posterImageView.context
             Glide.with(context)
                 .load(posterList[realPosition])
                 .into(holder.posterImageView)
 
+            if(isCheckedList.isNotEmpty()){
+                holder.checkbox.isChecked = isCheckedList[realPosition]
+            }
+            else{
+                holder.checkbox.isChecked = false
+            }
 
+
+            holder.checkbox.setOnClickListener {
+                likeListener.like(holder.checkbox.isChecked, isCheckedList[realPosition], posterList[realPosition], filmTitles[realPosition] )
+            }
 
             holder.itemView.setOnClickListener {
 
@@ -92,9 +124,13 @@ class PosterAdapter(
                 filmDescriptions[realPosition]
                 )
 
+
+
             }
 
         }
+
+
 
 
     }
@@ -108,6 +144,7 @@ class PosterAdapter(
         newfilmLengths: MutableList<String>,
         newfilmGenres: MutableList<String>,
         newfilmDescriptions: MutableList<String>,
+        newisCheckedList: MutableList<Boolean>
     ) {
 
 //        Log.d("ERROR", "В ОБНОВЛЕНИИ!!!!")
@@ -117,13 +154,16 @@ class PosterAdapter(
 
 
 
-        posterList.addAll(listofposters)
-        filmTitles.addAll(newFilmTitles)
-        filmYears.addAll(newfilmYears)
-        filmRatings.addAll(newfilmRatings)
-        filmLengths.addAll(newfilmLengths)
-        filmGenres.addAll(newfilmGenres)
-        filmDescriptions.addAll(newfilmDescriptions)
+            posterList.addAll(listofposters)
+            filmTitles.addAll(newFilmTitles)
+            filmYears.addAll(newfilmYears)
+            filmRatings.addAll(newfilmRatings)
+            filmLengths.addAll(newfilmLengths)
+            filmGenres.addAll(newfilmGenres)
+            filmDescriptions.addAll(newfilmDescriptions)
+            isCheckedList.addAll(newisCheckedList)
+
+
 
 
 

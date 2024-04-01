@@ -1,6 +1,8 @@
 package com.example.myapplication.viewModels
 
 import android.content.Context
+import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.myapplication.database.CinemaDB
@@ -13,7 +15,13 @@ class FilmSavedViewModel : ViewModel() {
     val search: MutableList<Film> = mutableListOf()
 
 
+    val searchData = MutableLiveData<Film?>()
+
+
     var films = MutableLiveData<MutableList<Film>>()
+
+
+    var savedFilm: Film = Film (0, "",0,0, 0, "","", "")
     init {
         films.postValue(mutableListOf())
     }
@@ -37,7 +45,7 @@ class FilmSavedViewModel : ViewModel() {
         executorService.execute {
             films.postValue(
                 CinemaDB.getInstance(context)
-                    .filmDao().select()?.toMutableList()
+                    .filmDao().select().toMutableList()
             )
         }
     }
@@ -55,21 +63,17 @@ class FilmSavedViewModel : ViewModel() {
     }
 
 
-    fun searchByAttr(context: Context, title: String, poster: String){
+    fun searchByAttr(context: Context, title: String, poster: String): LiveData<Film?> {
+
         executorService.execute {
+            val filmFound = CinemaDB.getInstance(context)
+                .filmDao().getByAttr(title, poster)
 
-
-            val element = CinemaDB.getInstance(context)
-                .filmDao().getByAttr( title, poster)
-
-            if(element != null){
-                search.add(element)
-                films.postValue(search)
-            }
-
-
-
+            Log.d(TAG, "найденный фильм при попытке лайка: $filmFound")
+            searchData.postValue(filmFound)
         }
+
+        return searchData
     }
 
     fun searchById(context: Context, id: Long) {

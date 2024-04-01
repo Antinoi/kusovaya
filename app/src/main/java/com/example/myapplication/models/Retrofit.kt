@@ -18,9 +18,9 @@ object Retrofit{
 
     @Volatile
     var retrofit = Retrofit.Builder()
-        .baseUrl("https://api.kinopoisk.dev")
+        .baseUrl("https://api.kinopoisk.dev/")
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-    }
+}
 
